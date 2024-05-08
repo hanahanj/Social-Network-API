@@ -17,16 +17,16 @@ const userSchema = new Schema(
             match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
 
           },
-          thoughts:{
+          thoughts:[{
             type: Schema.Types.ObjectId,
-            ref: 'thoughts'
+            ref: 'Thoughts'
 
-          },
-          friends:{
+          }],
+          friends:[{
             type: Schema.Types.ObjectId,
-            ref: 'friends'
+            ref: 'User'
 
-          },
+          }],
     },
     {
         // Mongoose supports two Schema options to transform Objects after querying MongoDb: toJSON and toObject.
@@ -39,12 +39,12 @@ const userSchema = new Schema(
     
   );
 
-//   userSchema
-//   .virtual('friendCount')
-//   // Getter
-//   .get(function () {
-//     return this.meta.friends;
-//   });
+  userSchema
+  .virtual('friendCount')
+  // Getter
+  .get(function () {
+    return this.friends.length;
+  });
 
 
   // Initialize our User model
