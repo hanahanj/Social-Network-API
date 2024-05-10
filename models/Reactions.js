@@ -1,10 +1,15 @@
-const { Schema, model } = require('mongoose');
+const { Schema, Types } = require('mongoose');
 
 // Schema to create Post model
 const reactionsSchema = new Schema(
   {
     
-    reactionID: {
+    reactionId: {
+       type: Schema.Types.ObjectID,
+       default: () => new Types.ObjectId(),
+    },
+
+    reactionBody: {
         type: String,
         required: true,
         minlength: 1,
@@ -21,13 +26,10 @@ const reactionsSchema = new Schema(
         type: String,
         required:true       
       },
-      reactions: {
-       //Array of nested documents created with the reactionSchema     
-      },
   },
   {
 
-    //do i need this (for both here and Users?)
+
     toJSON: {
       virtuals: true,
     },
@@ -36,6 +38,6 @@ const reactionsSchema = new Schema(
 );
 
 // Initialize our Thoughts model
-const Thoughts = model('thoughts', thoughtsSchema);
 
-module.exports = Thoughts;
+
+module.exports = reactionsSchema;

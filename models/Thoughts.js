@@ -1,4 +1,7 @@
 const { Schema, model } = require('mongoose');
+const Reactions = require('./reactions');
+
+
 
 // Schema to create Post model
 const thoughtsSchema = new Schema(
@@ -21,9 +24,10 @@ const thoughtsSchema = new Schema(
         type: String,
         required:true       
       },
-      reactions: {
-       //Array of nested documents created with the reactionSchema     
-      },
+      reactions:[
+        Reactions
+      ],
+
   },
   {
 
@@ -34,6 +38,11 @@ const thoughtsSchema = new Schema(
     id: false,
   }
 );
+
+thoughtsSchema.virtual('reactionCount').get(function(){
+return this.reactions.length;
+});
+
 
 // Initialize our Thoughts model
 const Thoughts = model('thoughts', thoughtsSchema);
