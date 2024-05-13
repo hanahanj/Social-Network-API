@@ -94,4 +94,40 @@ module.exports = {
         }
       },
 
+      async deleteReactions(req, res) {
+        try {
+            // Find the thought by its ID
+            const thought = await Thoughts.findById(req.params.thoughtId);
+            
+            // Check if the thought exists
+            if (!thought) {
+                return res.status(404).json({ message: 'No thought with that ID' });
+            }
+            
+            // Find the index of the reaction in the reactions array
+            const reactionIndex = thought.reactions.findIndex(reaction => reaction._id.toString() === req.params.reactionId);
+            
+            // Check if the reaction exists
+            if (reactionIndex === -1) {
+                return res.status(404).json({ message: 'No reaction with that ID for the given thought' });
+            }
+            
+            // Remove the reaction from the reactions array
+            thought.reactions.splice(reactionIndex, 1);
+            
+            // Save the updated thought
+            await thought.save();
+    
+            // Respond with success message
+            return res.json({ message: 'Reaction deleted successfully' });
+        } catch (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Server error' });
+        }
+    }
+    
+    
+    
+    
+
 };
